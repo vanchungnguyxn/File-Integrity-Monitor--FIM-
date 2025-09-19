@@ -24,7 +24,7 @@ pip install file-integrity-monitor
 ### From Source
 
 ```bash
-git clone https://github.com/fim-team/file-integrity-monitor.git
+git clone https://github.com/vanchungnguyxn/File-Integrity-Monitor--FIM-.git
 cd file-integrity-monitor
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
@@ -269,7 +269,7 @@ The generated HTML reports include:
 
 ```bash
 # Clone the repository
-git clone https://github.com/fim-team/file-integrity-monitor.git
+git clone https://github.com/vanchungnguyxn/File-Integrity-Monitor--FIM-.git
 cd file-integrity-monitor
 
 # Create virtual environment
