@@ -4,6 +4,7 @@ You can modify this file to see how FIM detects changes.
 
 Some sample content:
 - Configuration files
+- Log files
 - Important documents
 - System files
 
