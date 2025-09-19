@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Integrity Monitor Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .summary-card {
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 20px;
+            border-radius: 4px;
+        }
+        
+        .summary-card.added {
+            border-color: #28a745;
+        }
+        
+        .summary-card.modified {
+            border-color: #ffc107;
+        }
+        
+        .summary-card.deleted {
+            border-color: #dc3545;
+        }
+        
+        .summary-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .summary-card p {
+            margin: 0;
+            color: #666;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+        }
+        
+        .chart-section {
+            margin-bottom: 40px;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .events-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .events-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .events-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: top;
+        }
+        
+        .events-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .event-type {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .event-type.added {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .event-type.modified {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .event-type.deleted {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .hash {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            word-break: break-all;
+        }
+        
+        .timestamp {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .no-events {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            font-size: 1.2em;
+        }
+        
+        .no-events i {
+            font-size: 3em;
+            margin-bottom: 20px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>File Integrity Monitor</h1>
+            <p>Security Report</p>
+        </div>
+        
+        <div class="content">
+            <div class="summary">
+                <div class="summary-card added">
+                    <h3>{{ chart_data.data[0] }}</h3>
+                    <p>Files Added</p>
+                </div>
+                <div class="summary-card modified">
+                    <h3>{{ chart_data.data[1] }}</h3>
+                    <p>Files Modified</p>
+                </div>
+                <div class="summary-card deleted">
+                    <h3>{{ chart_data.data[2] }}</h3>
+                    <p>Files Deleted</p>
+                </div>
+                <div class="summary-card">
+                    <h3>{{ total_events }}</h3>
+                    <p>Total Events</p>
+                </div>
+            </div>
+            
+            {% if total_events > 0 %}
+            <div class="chart-section">
+                <h2 class="section-title">Event Distribution</h2>
+                <div class="chart-container">
+                    <canvas id="eventsChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="events-section">
+                <h2 class="section-title">Event Details</h2>
+                <table class="events-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>File Path</th>
+                            <th>Old Hash</th>
+                            <th>New Hash</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in events %}
+                        <tr>
+                            <td>
+                                <span class="event-type {{ event.type.lower() }}">
+                                    {{ event.type }}
+                                </span>
+                            </td>
+                            <td><strong>{{ event.path }}</strong></td>
+                            <td>
+                                {% if event.old_hash %}
+                                    <span class="hash">{{ event.old_hash[:16] }}...</span>
+                                {% else %}
+                                    <em>-</em>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if event.new_hash %}
+                                    <span class="hash">{{ event.new_hash[:16] }}...</span>
+                                {% else %}
+                                    <em>-</em>
+                                {% endif %}
+                            </td>
+                            <td class="timestamp">{{ event.timestamp[:19].replace('T', ' ') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="no-events">
+                <i>🔒</i>
+                <div>No integrity events detected</div>
+                <p>All files are secure and unchanged</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    {% if total_events > 0 %}
+    <script>
+        // Chart.js configuration
+        const ctx = document.getElementById('eventsChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ chart_data.labels | tojson }},
+                datasets: [{
+                    label: 'Number of Events',
+                    data: {{ chart_data.data | tojson }},
+                    backgroundColor: [
+                        'rgba(40, 167, 69, 0.8)',   // Green for ADDED
+                        'rgba(255, 193, 7, 0.8)',   // Yellow for MODIFIED
+                        'rgba(220, 53, 69, 0.8)'    // Red for DELETED
+                    ],
+                    borderColor: [
+                        'rgba(40, 167, 69, 1)',
+                        'rgba(255, 193, 7, 1)',
+                        'rgba(220, 53, 69, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'File System Events by Type',
+                        font: {
+                            size: 16
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    {% endif %}
+</body>
+</html>

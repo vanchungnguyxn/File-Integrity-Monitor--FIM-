@@ -1,0 +1,29 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com",
+      "role": "admin",
+      "created": "2025-01-01T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "role": "user",
+      "created": "2025-01-02T00:00:00Z"
+    }
+  ],
+  "settings": {
+    "theme": "dark",
+    "language": "en",
+    "notifications": true,
+    "auto_save": true
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2025-01-15T10:00:00Z",
+    "checksum": "abc123def456"
+  }
+}

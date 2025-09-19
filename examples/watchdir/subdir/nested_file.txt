@@ -1,0 +1,10 @@
+This is a nested file in a subdirectory.
+
+FIM will monitor files in subdirectories recursively.
+
+This file demonstrates:
+- Nested directory monitoring
+- Recursive file scanning
+- Subdirectory change detection
+
+Path: examples/watchdir/subdir/nested_file.txt
