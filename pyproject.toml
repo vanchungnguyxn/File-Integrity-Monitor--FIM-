@@ -9,10 +9,10 @@ description = "A command line tool to monitor file integrity in directories"
 readme = "README.md"
 license = {file = "LICENSE"}
 authors = [
-    {name = "FIM Team", email = "team@fim.dev"}
+    {name = "VanChung", email = "Ngv.chungg@gmail.com"}
 ]
 maintainers = [
-    {name = "FIM Team", email = "team@fim.dev"}
+    {name = "VanChung", email = "Ngv.chungg@gmail.com"}
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -51,10 +51,9 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/fim-team/file-integrity-monitor"
-Documentation = "https://github.com/fim-team/file-integrity-monitor#readme"
-Repository = "https://github.com/fim-team/file-integrity-monitor"
-"Bug Tracker" = "https://github.com/fim-team/file-integrity-monitor/issues"
+Homepage = "https://github.com/vanchungnguyxn/File-Integrity-Monitor--FIM-"
+Documentation = "https://github.com/vanchungnguyxn/File-Integrity-Monitor--FIM-/blob/main/README.md"
+Repository = "https://github.com/vanchungnguyxn/File-Integrity-Monitor--FIM-"
 
 [project.scripts]
 fim = "fim.cli:main"
