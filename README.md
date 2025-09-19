@@ -18,7 +18,7 @@ A powerful command-line tool to monitor file integrity in directories using SHA2
 ### From PyPI (Recommended)
 
 ```bash
-pip install file-integrity-monitor
+pip install file-integrity-monitor (coming soon)
 ```
 
 ### From Source
