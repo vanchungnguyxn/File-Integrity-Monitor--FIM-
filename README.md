@@ -1,7 +1,4 @@
 # File Integrity Monitor (FIM)
-
-[![CI](https://github.com/fim-team/file-integrity-monitor/workflows/CI/badge.svg)](https://github.com/fim-team/file-integrity-monitor/actions)
-[![codecov](https://codecov.io/gh/fim-team/file-integrity-monitor/branch/main/graph/badge.svg)](https://codecov.io/gh/fim-team/file-integrity-monitor)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
