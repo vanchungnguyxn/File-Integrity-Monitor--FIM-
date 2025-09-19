@@ -19,3 +19,4 @@ Try running:
 3. Edit this file while monitoring is running
 4. Stop monitoring with Ctrl+C
 5. fim report --events events.json --out report.html
+world
